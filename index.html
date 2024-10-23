@@ -79,7 +79,26 @@
           title: "Other",
           children: [
             {
-              title: "age",
+              title: "age data",
+              children: [
+                {
+                  title: "birthdate",
+                  children: [
+                    {
+                      title: "day",
+                    },
+                    {
+                      title: "month",
+                    },
+                    {
+                      title: "year",
+                    },
+                  ],
+                },
+                {
+                  title: "age",
+                },
+              ],
             },
             {
               title: "address",
@@ -107,6 +126,7 @@
           children: [
             {
               title: "Company address",
+              children: [{ title: "country" }, { title: "city" }],
             },
             {
               title: "Company name",
@@ -124,10 +144,14 @@
       data: [
         [
           "Daniel",
+          "22",
+          "03",
+          "2001",
           "21",
           "Zastavskaya",
           "46",
           "423",
+          "Russia",
           "Moscow",
           "RosPotrebNadzor",
           "4.5",

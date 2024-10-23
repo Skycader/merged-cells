@@ -1,0 +1,129 @@
+<script defer>
+  window.onload = () => {
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
+
+    function createHeaders(headers, row, level) {
+      if (!thead.rows[row]) {
+        thead.insertRow(row);
+      }
+      headers.forEach((header) => {
+        const th = document.createElement("th");
+        th.textContent = header.title;
+        if (header.children && header.children.length > 0) {
+          th.colSpan = getColSpan(header);
+          thead.rows[row].appendChild(th);
+          createHeaders(header.children, row + 1, level + 1);
+        } else {
+          th.rowSpan = getRowSpan(headers, level);
+          thead.rows[row].appendChild(th);
+        }
+      });
+    }
+
+    function getColSpan(header) {
+      if (!header.children || header.children.length === 0) {
+        return 1;
+      }
+      return header.children.reduce(
+        (colSpan, child) => colSpan + getColSpan(child),
+        0,
+      );
+    }
+
+    function getRowSpan(headers, level) {
+      const maxLevel = Math.max(...headers.map((header) => getLevel(header)));
+      return maxLevel - level + 1;
+    }
+
+    function getLevel(header) {
+      if (!header.children || header.children.length === 0) {
+        return 1;
+      }
+      return 1 + Math.max(...header.children.map((child) => getLevel(child)));
+    }
+
+    function createBody(data) {
+      data.forEach((rowData) => {
+        const row = tbody.insertRow();
+        rowData.forEach((cellData) => {
+          const cell = row.insertCell();
+          cell.textContent = cellData;
+        });
+      });
+    }
+
+    function createTableFromJSON(json) {
+      createHeaders(json.headers, 0, 0);
+      createBody(json.data);
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      return table;
+    }
+
+    // Example usage
+    const json = {
+      headers: [
+        {
+          title: "Name",
+        },
+        {
+          title: "Other",
+          children: [
+            {
+              title: "age",
+            },
+            {
+              title: "address",
+              children: [
+                {
+                  title: "Street",
+                },
+                {
+                  title: "block",
+                  children: [
+                    {
+                      title: "Building",
+                    },
+                    {
+                      title: "Door no.",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          title: "Company",
+          children: [
+            {
+              title: "Company address",
+            },
+            {
+              title: "Company name",
+            },
+          ],
+        },
+        {
+          title: "Gender",
+        },
+      ],
+      data: [
+        ["Daniel", "21", "46", "423", "Moscow", "RosPotrebNadzor", "Male"],
+      ],
+    };
+
+    document.body.appendChild(createTableFromJSON(json));
+  };
+</script>
+
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid;
+  }
+</style>

@@ -4,6 +4,7 @@
     const thead = document.createElement("thead");
     const tbody = document.createElement("tbody");
 
+    // Function to create header rows
     function createHeaders(headers, row, level) {
       if (!thead.rows[row]) {
         thead.insertRow(row);
@@ -22,6 +23,7 @@
       });
     }
 
+    // Function to calculate column span
     function getColSpan(header) {
       if (!header.children || header.children.length === 0) {
         return 1;
@@ -32,18 +34,26 @@
       );
     }
 
+    // Function to calculate row span
     function getRowSpan(headers, level) {
       const maxLevel = Math.max(...headers.map((header) => getLevel(header)));
       return maxLevel - level + 1;
     }
 
+    // Function to get the level of a header
     function getLevel(header) {
       if (!header.children || header.children.length === 0) {
         return 1;
       }
-      return 1 + Math.max(...header.children.map((child) => getLevel(child)));
+      let res =
+        1 + Math.max(...header.children.map((child) => getLevel(child)));
+
+      console.log("header: ", header, "level", res);
+
+      return res;
     }
 
+    // Function to create body rows
     function createBody(data) {
       data.forEach((rowData) => {
         const row = tbody.insertRow();
@@ -54,6 +64,7 @@
       });
     }
 
+    // Function to create table from JSON data
     function createTableFromJSON(json) {
       createHeaders(json.headers, 0, 0);
       createBody(json.data);
@@ -112,7 +123,16 @@
         },
       ],
       data: [
-        ["Daniel", "21", "46", "423", "Moscow", "RosPotrebNadzor", "Male"],
+        [
+          "Daniel",
+          "21",
+          "Zastavskaya",
+          "46",
+          "423",
+          "Moscow",
+          "RosPotrebNadzor",
+          "Male",
+        ],
       ],
     };
 

@@ -37,7 +37,7 @@
     // Function to calculate row span
     function getRowSpan(headers, level) {
       const maxLevel = Math.max(...headers.map((header) => getLevel(header)));
-      return maxLevel - level + 1;
+      return maxLevel + level + 1;
     }
 
     // Function to get the level of a header
@@ -45,12 +45,7 @@
       if (!header.children || header.children.length === 0) {
         return 1;
       }
-      let res =
-        1 + Math.max(...header.children.map((child) => getLevel(child)));
-
-      console.log("header: ", header, "level", res);
-
-      return res;
+      return 1 + Math.max(...header.children.map((child) => getLevel(child)));
     }
 
     // Function to create body rows
